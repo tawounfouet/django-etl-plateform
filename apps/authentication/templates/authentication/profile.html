@@ -1,0 +1,274 @@
+{% extends 'ui/base.html' %}
+
+{% block title %}User Profile - ETL Platform{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Profile Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <div class="profile-avatar mb-3">
+                                    {% if profile.avatar %}
+                                        <img src="{{ profile.avatar.url }}" class="rounded-circle" width="120" height="120" alt="Avatar">
+                                    {% else %}
+                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 120px; height: 120px; margin: 0 auto;">
+                                            <i class="fas fa-user fa-3x"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {{ profile_form.avatar }}
+                                <small class="form-text text-muted">Max size: 2MB</small>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" value="{{ user.first_name }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" value="{{ user.last_name }}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Member Since</label>
+                                        <input type="text" class="form-control" value="{{ user.date_joined|date:'F d, Y' }}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Department</label>
+                                        <input type="text" class="form-control" value="{{ user.department|default:'Not specified' }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Job Title</label>
+                                        <input type="text" class="form-control" value="{{ user.job_title|default:'Not specified' }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="{{ profile_form.bio.id_for_label }}" class="form-label">Bio</label>
+                                {{ profile_form.bio }}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.timezone.id_for_label }}" class="form-label">Timezone</label>
+                                {{ profile_form.timezone }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.language.id_for_label }}" class="form-label">Language</label>
+                                {{ profile_form.language }}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ profile_form.email_notifications }}
+                                    <label for="{{ profile_form.email_notifications.id_for_label }}" class="form-check-label">
+                                        Email Notifications
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ profile_form.pipeline_notifications }}
+                                    <label for="{{ profile_form.pipeline_notifications.id_for_label }}" class="form-check-label">
+                                        Pipeline Notifications
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Password Change Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lock me-2"></i>Change Password
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form id="passwordForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.old_password.id_for_label }}" class="form-label">Current Password</label>
+                            {{ password_form.old_password }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.new_password1.id_for_label }}" class="form-label">New Password</label>
+                            {{ password_form.new_password1 }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.new_password2.id_for_label }}" class="form-label">Confirm New Password</label>
+                            {{ password_form.new_password2 }}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-warning btn-sm w-100">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- User Permissions Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>ETL Permissions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="permission-item d-flex justify-content-between align-items-center mb-2">
+                        <span>Create Pipelines</span>
+                        <span class="badge bg-{{ user.can_create_pipelines|yesno:'success,secondary' }}">
+                            {{ user.can_create_pipelines|yesno:'Yes,No' }}
+                        </span>
+                    </div>
+                    <div class="permission-item d-flex justify-content-between align-items-center mb-2">
+                        <span>Modify Pipelines</span>
+                        <span class="badge bg-{{ user.can_modify_pipelines|yesno:'success,secondary' }}">
+                            {{ user.can_modify_pipelines|yesno:'Yes,No' }}
+                        </span>
+                    </div>
+                    <div class="permission-item d-flex justify-content-between align-items-center mb-2">
+                        <span>Execute Pipelines</span>
+                        <span class="badge bg-{{ user.can_execute_pipelines|yesno:'success,secondary' }}">
+                            {{ user.can_execute_pipelines|yesno:'Yes,No' }}
+                        </span>
+                    </div>
+                    <div class="permission-item d-flex justify-content-between align-items-center mb-2">
+                        <span>View Monitoring</span>
+                        <span class="badge bg-{{ user.can_view_monitoring|yesno:'success,secondary' }}">
+                            {{ user.can_view_monitoring|yesno:'Yes,No' }}
+                        </span>
+                    </div>
+                    <div class="permission-item d-flex justify-content-between align-items-center">
+                        <span>Manage Connectors</span>
+                        <span class="badge bg-{{ user.can_manage_connectors|yesno:'success,secondary' }}">
+                            {{ user.can_manage_connectors|yesno:'Yes,No' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Profile form submission
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('{% url "authentication:update_profile" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('success', data.message);
+        } else {
+            showAlert('danger', 'Please correct the errors below.');
+            // Handle form errors
+        }
+    })
+    .catch(error => {
+        showAlert('danger', 'An error occurred while updating your profile.');
+    });
+});
+
+// Password form submission
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('{% url "authentication:change_password" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('success', data.message);
+            this.reset();
+        } else {
+            showAlert('danger', 'Please correct the errors below.');
+            // Handle form errors
+        }
+    })
+    .catch(error => {
+        showAlert('danger', 'An error occurred while changing your password.');
+    });
+});
+
+function showAlert(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container-fluid');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+</script>
+{% endblock %}
