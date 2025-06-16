@@ -1,0 +1,22 @@
+# Production requirements
+-r base.txt
+
+# Production WSGI Server
+gunicorn>=21.2.0
+gevent>=23.7.0
+
+# Production Database
+psycopg2>=2.9.0
+
+# Monitoring and Observability
+prometheus-client>=0.17.0
+sentry-sdk[django]>=1.32.0
+
+# Performance
+whitenoise>=6.5.0
+
+# Health Checks
+django-health-check>=3.17.0
+
+
+whitenoise>=6.5.0

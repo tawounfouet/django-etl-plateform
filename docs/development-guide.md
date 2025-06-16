@@ -20,8 +20,8 @@ git clone https://github.com/your-org/django-etl-platform.git
 cd django-etl-platform
 
 # Créer environnement virtuel
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
 # ou venv\Scripts\activate  # Windows
 
 # Installer les dépendances

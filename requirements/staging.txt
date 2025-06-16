@@ -1,0 +1,16 @@
+# Staging requirements
+-r base.txt
+
+# Include some development tools for staging
+pytest>=7.4.0
+pytest-django>=4.5.0
+django-debug-toolbar>=4.2.0
+
+# Production-like server
+gunicorn>=21.2.0
+
+# Monitoring
+prometheus-client>=0.17.0
+
+
+whitenoise>=6.5.0
